@@ -21,7 +21,28 @@ module.exports = () => {
       new HtmlWebpackPlugin({
         template: './index.html',
         title: 'Webpack Plugin'
-      })
+      }),
+      new WebpackPwaManifest({
+        inject: true,
+        fingerprints: false,
+        name: 'Just Another Text Editor',
+        short_name: 'J.A.T.E',
+        description: 'Text editor with JS syntax highlighting',
+        start_url: '/',
+        publicPath: '/',
+        icons: [
+          {
+            src: path.resolve('src/images/logo.png'),
+            destination: path.join('assets', 'icons'),
+            sizes: [96, 128, 192, 256, 384, 512]
+          }
+        ]
+
+      }),
+      new InjectManifest({
+        swSrc: './src-sw.js',
+        swDest: 'src-sw.js',
+      }),
     ],
 
     module: {
@@ -37,7 +58,7 @@ module.exports = () => {
             loader: 'babel-loader',
             options: {
               presets: [
-                ['@babel/preset-env', {targets: "defaults"}]
+                ['@babel/preset-env']
               ]
             }
           }
